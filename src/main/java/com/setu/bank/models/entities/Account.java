@@ -9,6 +9,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Check;
 
+import com.setu.bank.models.entities.enums.AccountType;
+
 @Entity
 @Table(name = "account")
 public class Account extends BaseEntity{

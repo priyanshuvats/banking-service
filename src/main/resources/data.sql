@@ -1,2 +1,2 @@
-INSERT INTO test.user (id, name, email) VALUES
-(1, "Priyanshu", "priyanshu@gmail.com");
+INSERT INTO test.user (name, email) VALUES
+("Priyanshu", "priyanshu@gmail.com");

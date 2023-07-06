@@ -3,6 +3,7 @@ services:
   springboot-app:
     container_name: bank-app
     image: springbooot-app
+    restart: always
     build: .
     ports:
       - 8000:8080 
