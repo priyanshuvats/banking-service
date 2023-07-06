@@ -8,6 +8,7 @@ import com.setu.bank.models.entities.enums.TransactionType;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class TransactionRestriction extends BaseEntity{
     
     @Enumerated(EnumType.STRING)

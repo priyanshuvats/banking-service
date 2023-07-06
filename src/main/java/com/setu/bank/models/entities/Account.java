@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import org.hibernate.annotations.Check;
 
@@ -17,12 +16,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
+@Setter
 public class Account extends BaseEntity{
     @Column(name = "account_number", unique = true)
     private String accountNumber;
