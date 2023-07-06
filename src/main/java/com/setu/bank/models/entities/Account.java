@@ -12,11 +12,15 @@ import org.hibernate.annotations.Check;
 import com.setu.bank.models.entities.enums.AccountType;
 import com.setu.bank.models.entities.enums.KycStatus;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "account")
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
 public class Account extends BaseEntity{
@@ -47,4 +51,5 @@ public class Account extends BaseEntity{
                             .build();
         return account;
     }
+
 }

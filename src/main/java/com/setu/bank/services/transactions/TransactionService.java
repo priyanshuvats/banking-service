@@ -3,6 +3,8 @@ package com.setu.bank.services.transactions;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.setu.bank.models.entities.Account;
@@ -40,7 +42,11 @@ public class TransactionService {
     }
 
     public List<Transaction> getTransactions(GetTransactionsRequest getTransactionsRequest){
-        return null;
+        int limit = getTransactionsRequest.getLimit();
+        int offset = getTransactionsRequest.getOffset();
+        String accountNumber = getTransactionsRequest.getAccountNumber();
+        Pageable pageable = PageRequest.of(offset, limit);
+        return transactionRepository.findAllByAccountNumber(accountNumber, pageable);
     }
 
     public Long getLastXDaysTransactionCount(String accountNumber, TransactionType txnType, int numOfDays){

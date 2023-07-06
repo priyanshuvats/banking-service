@@ -5,10 +5,15 @@ import javax.persistence.*;
 import com.setu.bank.models.entities.enums.TransactionType;
 import com.setu.bank.models.responses.Status;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Transaction extends BaseEntity{
 
     @Column

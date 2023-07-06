@@ -2,10 +2,14 @@ package com.setu.bank.models.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User extends BaseEntity{
     
     @Column

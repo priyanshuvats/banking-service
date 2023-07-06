@@ -2,6 +2,7 @@ package com.setu.bank.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,9 +15,9 @@ import com.setu.bank.models.entities.enums.TransactionType;
 public interface TransactionRepository extends JpaRepository<Transaction, Long>{
 
     @Query("""
-        SELECT count(t) FROM Transaction t JOIN t.account a aWHERE a.accountNumber = :accountNumber and 
+        SELECT count(t) FROM Transaction t JOIN t.account a WHERE a.accountNumber = :accountNumber and 
         t.transactionType = :transactionType and
-        t.createdAt between NOW() AND NOW()-INTERVAL :numOfDays DAY
+        t.createdAt between CURRENT_DATE() AND (CURRENT_DATE() - :numOfDays)
         """)
     Long countTransactionWithinLastXDays(
         @Param("accountNumber") String accountNumber,
@@ -26,27 +27,21 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
     
 
     @Query("""
-        SELECT sum(t) FROM Transaction t JOIN t.account a aWHERE a.accountNumber = :accountNumber and 
+        SELECT sum(t) FROM Transaction t JOIN t.account a WHERE a.accountNumber = :accountNumber and 
         t.transactionType = :transactionType and
-        t.createdAt between NOW() AND NOW()-INTERVAL :numOfDays DAY
+        t.createdAt between CURRENT_DATE() AND (CURRENT_DATE() - :numOfDays)
         """)
     Double sumTransactionWithinLastXDays(
         @Param("accountNumber") String accountNumber,
         @Param("transactionType") TransactionType transactionType,
         @Param("numOfDays") int numOfDays);
-    
-    // List<Transaction> findAllByAccountNumberAndTransactionTypeCreatedAtBetween(
-    //                 String accountNumber, TransactionType txnType,
-    //                 LocalDateTime startDate, LocalDateTime endDate);
 
     
     @Query("""
-        SELECT t FROM Transaction t JOIN t.account a aWHERE a.accountNumber = :accountNumber 
-        limit :limit offset :offset
+        SELECT t FROM Transaction t JOIN t.account a WHERE a.accountNumber = :accountNumber
         """)
     List<Transaction> findAllByAccountNumber(
                     @Param("accountNumber") String accountNumber,
-                    @Param("limit") int limit,
-                    @Param("offset") int offset);
+                    Pageable pageable);
 
 }

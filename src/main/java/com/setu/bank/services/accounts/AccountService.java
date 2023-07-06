@@ -9,14 +9,17 @@ import com.setu.bank.models.requests.CreateAccountRequest;
 import com.setu.bank.repositories.AccountRepository;
 import com.setu.bank.repositories.UserRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class AccountService {
 
     @Autowired
-    AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
     
     // TODO: Implement a check on opening balance by leveraging
     // openingBalance as a deposit transaction
