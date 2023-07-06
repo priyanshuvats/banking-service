@@ -6,7 +6,10 @@ import com.setu.bank.models.entities.enums.AccountType;
 import com.setu.bank.models.entities.enums.TransactionRestrictionType;
 import com.setu.bank.models.entities.enums.TransactionType;
 
+import lombok.Getter;
+
 @Entity
+@Getter
 public class TransactionRestriction extends BaseEntity{
     
     @Enumerated(EnumType.STRING)
@@ -22,7 +25,6 @@ public class TransactionRestriction extends BaseEntity{
     private Double value;
 
     @Column(name = "action", columnDefinition = "json")
-    // @Type(type = "json")
     private RestrictionAction action;
 
 }

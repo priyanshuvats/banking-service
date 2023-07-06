@@ -3,8 +3,12 @@ package com.setu.bank.models.entities;
 import javax.persistence.*;
 
 import com.setu.bank.models.entities.enums.TransactionType;
+import com.setu.bank.models.responses.Status;
+
+import lombok.Builder;
 
 @Entity
+@Builder
 public class Transaction extends BaseEntity{
 
     @Column
@@ -19,4 +23,8 @@ public class Transaction extends BaseEntity{
 
     @ManyToOne
     private Account account;
+
+    public Status toResponseDto() {
+        return null;
+    }
 }
