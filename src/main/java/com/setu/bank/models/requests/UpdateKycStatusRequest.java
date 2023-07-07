@@ -6,6 +6,5 @@ import lombok.Data;
 
 @Data
 public class UpdateKycStatusRequest {
-    private String accountNumber;
     private KycStatus kycStatus;
 }

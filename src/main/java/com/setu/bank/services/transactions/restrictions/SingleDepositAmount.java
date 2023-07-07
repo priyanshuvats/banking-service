@@ -22,7 +22,7 @@ public class SingleDepositAmount implements IRestrictionService{
         if(txnType.equals(TransactionType.DEPOSIT) && (txnAmount>allowedMaxDeposit)){
             return transactionRestriction.getAction();
         }
-        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO_CHARGE);
+        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO);
     }
     
 }

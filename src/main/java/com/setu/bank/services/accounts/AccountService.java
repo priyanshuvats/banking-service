@@ -47,8 +47,9 @@ public class AccountService {
         accountRepository.decrementBalance(accountNumber, amount);
     }
 
-    public void updateKycStatus(String accountNumber, KycStatus status){
-        accountRepository.updateKyc(accountNumber, status);
+    public KycStatus updateKycStatus(String accountNumber, KycStatus status){
+        Account account = accountRepository.updateKyc(accountNumber, status);
+        return account.getKycStatus();
     }
     
 }

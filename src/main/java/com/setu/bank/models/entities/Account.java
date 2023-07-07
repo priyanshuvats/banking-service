@@ -6,8 +6,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.Check;
-
 import com.setu.bank.models.dtos.AccountDto;
 import com.setu.bank.models.entities.enums.AccountType;
 import com.setu.bank.models.entities.enums.KycStatus;
@@ -34,7 +32,6 @@ public class Account extends BaseEntity{
     private AccountType accountType;
 
     @Column
-    @Check(constraints = "balance >= 0")
     private Double balance;
 
     @Column(name = "kyc_status")

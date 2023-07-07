@@ -3,6 +3,7 @@ package com.setu.bank.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.setu.bank.models.entities.Account;
+import com.setu.bank.models.entities.enums.KycStatus;
 import com.setu.bank.models.requests.CreateAccountRequest;
 import com.setu.bank.models.requests.UpdateKycStatusRequest;
 import com.setu.bank.models.responses.CreateAccountReponse;
@@ -42,14 +44,15 @@ public class AccountController {
 		}
 	}
     
-	@PutMapping("/kyc")
-	public ResponseEntity<Boolean> updateKycStatus(@RequestBody UpdateKycStatusRequest request) {
+	@PutMapping("/{accountNumber}/kyc")
+	public ResponseEntity<KycStatus> updateKycStatus(@PathVariable String accountNumber,
+								@RequestBody UpdateKycStatusRequest request) {
 		try{
-			accountService.updateKycStatus(request.getAccountNumber(), request.getKycStatus());
-			return ResponseEntity.ok(true);
+			KycStatus status = accountService.updateKycStatus(accountNumber, request.getKycStatus());
+			return ResponseEntity.ok(status);
 		} catch (Exception e) {
 			log.error(e.getMessage() + " Error : " + e);
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
 		}
 	}
 

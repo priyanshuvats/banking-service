@@ -23,12 +23,14 @@ public class MonthlyWithdrawalCount implements IRestrictionService{
         if(txnType.equals(TransactionType.WITHDRAWAL)){
             Long lastThirtyDaysWithdrawlTxn = transactionService.getLastXDaysTransactionCount(
                                             accountNumber, txnType, AppConstants.MONTH_DAY_COUNT);
+            lastThirtyDaysWithdrawlTxn = lastThirtyDaysWithdrawlTxn==null 
+                                        ? AppConstants.ZERO.longValue() : lastThirtyDaysWithdrawlTxn;
             Double limit = transactionRestriction.getValue();
             if(lastThirtyDaysWithdrawlTxn>=limit){
                 return transactionRestriction.getAction();
             }
         }
-        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO_CHARGE);
+        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO);
     }
     
 }

@@ -17,7 +17,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
     @Query("""
         SELECT count(t) FROM Transaction t JOIN t.account a WHERE a.accountNumber = :accountNumber and 
         t.transactionType = :transactionType and
-        t.createdAt between CURRENT_DATE() AND (CURRENT_DATE() - :numOfDays)
+        date(t.createdAt) between (CURRENT_DATE() - :numOfDays) AND CURRENT_DATE()
         """)
     Long countTransactionWithinLastXDays(
         @Param("accountNumber") String accountNumber,
@@ -27,9 +27,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
     
 
     @Query("""
-        SELECT sum(t) FROM Transaction t JOIN t.account a WHERE a.accountNumber = :accountNumber and 
+        SELECT sum(t.amount) FROM Transaction t JOIN t.account a WHERE a.accountNumber = :accountNumber and 
         t.transactionType = :transactionType and
-        t.createdAt between CURRENT_DATE() AND (CURRENT_DATE() - :numOfDays)
+        date(t.createdAt) between (CURRENT_DATE() - :numOfDays) AND CURRENT_DATE()
         """)
     Double sumTransactionWithinLastXDays(
         @Param("accountNumber") String accountNumber,

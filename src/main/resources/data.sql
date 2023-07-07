@@ -1,5 +1,8 @@
 SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
+ALTER TABLE test.account
+ADD CONSTRAINT chk_balance CHECK (`balance` >= 0);
+
 INSERT INTO test.user (name, email) VALUES
 ("Priyanshu", "priyanshu@gmail.com"),
 ("Kanishk", "kanishk@gmail.com"),
@@ -7,7 +10,7 @@ INSERT INTO test.user (name, email) VALUES
 ("Deepika", "deepika@gmail.com"),
 ("Ridhi", "ridhi@gmail.com");
 
-INSERT INTO test.transaction_restriction (transaction_type, account_type, type, value, actions)
+INSERT INTO test.transaction_restriction (transaction_type, account_type, type, value, action)
 VALUES
 ("WITHDRAWAL", "ZERO_BALANCE", "MONTHLY_WITHDRAWAL_COUNT", 4, '{"actionType":"BLOCK"}'),
 ("WITHDRAWAL", "STUDENT", "MONTHLY_WITHDRAWAL_COUNT", 4, '{"actionType":"ALLOW", "charge":10}'),

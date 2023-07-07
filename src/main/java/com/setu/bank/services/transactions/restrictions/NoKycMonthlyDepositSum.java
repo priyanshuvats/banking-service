@@ -26,13 +26,16 @@ public class NoKycMonthlyDepositSum implements IRestrictionService{
         if(txnType.equals(TransactionType.DEPOSIT) && kycStatus.equals(KycStatus.PENDING)){
             Double lastThirtyDaysDepositAmount = transactionService.getLastXDaysTransactionSum(
                 createTransactionRequest.getAccountNumber(), txnType, AppConstants.MONTH_DAY_COUNT);
+            System.out.println(lastThirtyDaysDepositAmount);
+            lastThirtyDaysDepositAmount = lastThirtyDaysDepositAmount==null 
+                                        ? AppConstants.ZERO : lastThirtyDaysDepositAmount;
             Double allowedLimit = transactionRestriction.getValue();
             Double txnAmount = createTransactionRequest.getAmount();
             if(lastThirtyDaysDepositAmount + txnAmount > allowedLimit){
                 return transactionRestriction.getAction();
             }
         }
-        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO_CHARGE);
+        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO);
     }
     
 }

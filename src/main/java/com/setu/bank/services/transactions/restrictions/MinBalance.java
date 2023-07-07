@@ -25,7 +25,7 @@ public class MinBalance implements IRestrictionService {
         if(txnType.equals(TransactionType.WITHDRAWAL) && (balance-txnAmount<minBalanceNeeded)){
             return transactionRestriction.getAction();
         }
-        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO_CHARGE);
+        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO);
     }
     
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.setu.bank.constants.AppConstants;
 import com.setu.bank.exceptions.InvalidTransactionException;
 import com.setu.bank.models.entities.Account;
 import com.setu.bank.models.entities.RestrictionAction;
@@ -37,7 +38,7 @@ public class TransactionFacade {
         Account account = accountService.getAccount(accountNumber);
         TransactionType txnType = createTransactionsRequest.getTransactionType();
         List<TransactionRestriction> txnRestrictions = transactionService.getRestrictions(txnType, account.getAccountType());
-        Double charges = 0D;
+        Double charges = AppConstants.ZERO;
 
         // run validations
         for(TransactionRestriction restriction: txnRestrictions){
@@ -47,14 +48,14 @@ public class TransactionFacade {
             if(actionType.equals(RestrictionActionType.BLOCK)){
                 throw new InvalidTransactionException("Transaction failed some restrictions!!");
             }
-            charges += restrictionAction.getCharge()==null ? 0 : restrictionAction.getCharge();
+            charges += restrictionAction.getCharge()==null ? AppConstants.ZERO : restrictionAction.getCharge();
         }
 
         // settle balance
         Double txnAmount = createTransactionsRequest.getAmount();
         if(txnType.equals(TransactionType.DEPOSIT)){
             accountService.deposit(accountNumber, txnAmount-charges);
-        } else if (txnType.equals(TransactionType.DEPOSIT)){
+        } else if (txnType.equals(TransactionType.WITHDRAWAL)){
             accountService.withdraw(accountNumber, txnAmount+charges);
         }
 
