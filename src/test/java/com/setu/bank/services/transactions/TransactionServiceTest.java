@@ -11,7 +11,7 @@ import com.setu.bank.repositories.TransactionRepository;
 import com.setu.bank.repositories.TransactionRestrictionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.PageRequest;
+// import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ class TransactionServiceTest {
         transactions.add(new Transaction());
         transactions.add(new Transaction());
 
-        Pageable pageable = PageRequest.of(0, 10);
+        // Pageable pageable = PageRequest.of(0, 10);
 
         when(transactionRepository.findAllByAccountNumber(anyString(), any(Pageable.class))).thenReturn(transactions);
 

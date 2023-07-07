@@ -1,5 +1,6 @@
 package com.setu.bank.services.transactions.restrictions;
 
+import com.setu.bank.constants.AppConstants;
 import com.setu.bank.models.entities.RestrictionAction;
 import com.setu.bank.models.entities.TransactionRestriction;
 import com.setu.bank.models.entities.enums.RestrictionActionType;
@@ -21,13 +22,13 @@ public class MonthlyWithdrawalCount implements IRestrictionService{
         TransactionType txnType = createTransactionRequest.getTransactionType();
         if(txnType.equals(TransactionType.WITHDRAWAL)){
             Long lastThirtyDaysWithdrawlTxn = transactionService.getLastXDaysTransactionCount(
-                                            accountNumber, txnType, 30);
+                                            accountNumber, txnType, AppConstants.MONTH_DAY_COUNT);
             Double limit = transactionRestriction.getValue();
             if(lastThirtyDaysWithdrawlTxn>=limit){
                 return transactionRestriction.getAction();
             }
         }
-        return new RestrictionAction(RestrictionActionType.ALLOW, 0D);
+        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO_CHARGE);
     }
     
 }

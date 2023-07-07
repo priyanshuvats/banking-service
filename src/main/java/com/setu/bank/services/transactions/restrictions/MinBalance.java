@@ -1,5 +1,6 @@
 package com.setu.bank.services.transactions.restrictions;
 
+import com.setu.bank.constants.AppConstants;
 import com.setu.bank.models.entities.Account;
 import com.setu.bank.models.entities.RestrictionAction;
 import com.setu.bank.models.entities.TransactionRestriction;
@@ -24,7 +25,7 @@ public class MinBalance implements IRestrictionService {
         if(txnType.equals(TransactionType.WITHDRAWAL) && (balance-txnAmount<minBalanceNeeded)){
             return transactionRestriction.getAction();
         }
-        return new RestrictionAction(RestrictionActionType.ALLOW, 0D);
+        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO_CHARGE);
     }
     
 }

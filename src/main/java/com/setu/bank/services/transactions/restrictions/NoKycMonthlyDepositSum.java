@@ -1,5 +1,6 @@
 package com.setu.bank.services.transactions.restrictions;
 
+import com.setu.bank.constants.AppConstants;
 import com.setu.bank.models.entities.Account;
 import com.setu.bank.models.entities.RestrictionAction;
 import com.setu.bank.models.entities.TransactionRestriction;
@@ -24,14 +25,14 @@ public class NoKycMonthlyDepositSum implements IRestrictionService{
         KycStatus kycStatus = account.getKycStatus();
         if(txnType.equals(TransactionType.DEPOSIT) && kycStatus.equals(KycStatus.PENDING)){
             Double lastThirtyDaysDepositAmount = transactionService.getLastXDaysTransactionSum(
-                createTransactionRequest.getAccountNumber(), txnType, 30);
+                createTransactionRequest.getAccountNumber(), txnType, AppConstants.MONTH_DAY_COUNT);
             Double allowedLimit = transactionRestriction.getValue();
             Double txnAmount = createTransactionRequest.getAmount();
             if(lastThirtyDaysDepositAmount + txnAmount > allowedLimit){
                 return transactionRestriction.getAction();
             }
         }
-        return new RestrictionAction(RestrictionActionType.ALLOW, 0D);
+        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO_CHARGE);
     }
     
 }

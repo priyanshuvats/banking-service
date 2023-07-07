@@ -1,5 +1,6 @@
 package com.setu.bank.services.transactions.restrictions;
 
+import com.setu.bank.constants.AppConstants;
 import com.setu.bank.models.entities.RestrictionAction;
 import com.setu.bank.models.entities.TransactionRestriction;
 import com.setu.bank.models.entities.enums.RestrictionActionType;
@@ -21,7 +22,7 @@ public class SingleDepositAmount implements IRestrictionService{
         if(txnType.equals(TransactionType.DEPOSIT) && (txnAmount>allowedMaxDeposit)){
             return transactionRestriction.getAction();
         }
-        return new RestrictionAction(RestrictionActionType.ALLOW, 0D);
+        return new RestrictionAction(RestrictionActionType.ALLOW, AppConstants.ZERO_CHARGE);
     }
     
 }

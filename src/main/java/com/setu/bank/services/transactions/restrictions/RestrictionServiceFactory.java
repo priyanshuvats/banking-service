@@ -22,7 +22,7 @@ public class RestrictionServiceFactory {
         TransactionRestrictionType type = txnRestriction.getType();
         if(TransactionRestrictionType.MINIMUM_BALANCE.equals(type)){
             return new MinBalance(txnRestriction, account);
-        } else if(TransactionRestrictionType.MONTHLY_WITHDRAWL_COUNT.equals(type)){
+        } else if(TransactionRestrictionType.MONTHLY_WITHDRAWAL_COUNT.equals(type)){
             return new MonthlyWithdrawalCount(transactionService, txnRestriction);
         } else if(TransactionRestrictionType.SINGLE_DEPOSIT_AMOUNT.equals(type)){
             return new SingleDepositAmount(txnRestriction);
