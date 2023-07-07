@@ -19,11 +19,7 @@
 ## Setup
 - please ensure you have docker installed on your machine.
 - navigate to the project folder
-- build project 
-```
-./gradlew clean build 
-```
-- run project 
+- build and run project 
 ```
 docker-compose up --build 
 ```
