@@ -28,4 +28,12 @@
 docker-compose up --build 
 ```
 - please wait as it might take a couple of minutes for containers to be up
-- play around with swagger UI: http://localhost:8000/swagger-ui.html 
+- play around with swagger UI: http://localhost:8000/swagger-ui.html
+
+## Architecture
+- [HLD] ![image](https://github.com/priyanshuvats/banking-service/assets/64020180/5fabc4e8-2c86-4ba3-adcc-2464d0124cbc)
+
+
+- [LLD] ![image](https://github.com/priyanshuvats/banking-service/assets/64020180/efc27cce-3603-4ed7-83c2-cad3280d033b)
+
+
