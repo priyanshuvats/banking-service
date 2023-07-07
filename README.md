@@ -14,7 +14,7 @@
     - these rules are configured in the database at the starting of application.
 
 ## PRD
-    - https://docs.google.com/document/d/1wokIOGg4QM-cWD8S4Tt_PmEJwTGCiU9xEvFEAFownnU/edit?usp=sharing
+- https://docs.google.com/document/d/1wokIOGg4QM-cWD8S4Tt_PmEJwTGCiU9xEvFEAFownnU/edit?usp=sharing
 
 ## Setup
 - please ensure you have docker installed on your machine.
