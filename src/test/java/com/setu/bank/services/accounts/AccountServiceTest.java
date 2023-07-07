@@ -10,7 +10,6 @@ import com.setu.bank.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,17 +106,14 @@ public class AccountServiceTest {
     @Test
     void updateKycStatus_ValidAccountNumberAndStatus_CallsUpdateKyc() {
 
-        Account account = new Account();
-        account.setKycStatus(KycStatus.COMPLETED);
+        String accountNumber = "123456789";
+        KycStatus status = KycStatus.PENDING;
 
-        Mockito.when(accountRepository.updateKyc(Mockito.anyString(), Mockito.any(KycStatus.class)))
-                .thenReturn(account);
 
-        KycStatus updatedStatus = accountService.updateKycStatus("accountNumber123", KycStatus.COMPLETED);
+        accountService.updateKycStatus(accountNumber, status);
 
-        assertEquals(KycStatus.COMPLETED, updatedStatus);
-        Mockito.verify(accountRepository, Mockito.times(1))
-                .updateKyc(Mockito.anyString(), Mockito.any(KycStatus.class));
+
+        verify(accountRepository).updateKyc(accountNumber, status);
     }
 
 }

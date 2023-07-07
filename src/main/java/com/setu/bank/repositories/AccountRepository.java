@@ -28,6 +28,6 @@ public interface AccountRepository extends JpaRepository<Account, Long>{
     @Transactional
     @Modifying
     @Query("UPDATE Account a SET a.kycStatus = :kycStatus WHERE a.accountNumber = :accountNumber")
-    Account updateKyc(@Param("accountNumber") String accountNumber, @Param("kycStatus") KycStatus kycStatus);
+    int updateKyc(@Param("accountNumber") String accountNumber, @Param("kycStatus") KycStatus kycStatus);
 
 }
