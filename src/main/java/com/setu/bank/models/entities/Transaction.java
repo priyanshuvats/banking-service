@@ -2,8 +2,8 @@ package com.setu.bank.models.entities;
 
 import javax.persistence.*;
 
+import com.setu.bank.models.dtos.TransactionDto;
 import com.setu.bank.models.entities.enums.TransactionType;
-import com.setu.bank.models.responses.Status;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,13 @@ public class Transaction extends BaseEntity{
     @ManyToOne
     private Account account;
 
-    public Status toResponseDto() {
-        return null;
+    public TransactionDto toDto() {
+        return TransactionDto.builder()
+                            .accountNumber(this.account.getAccountNumber())
+                            .transactionType(this.transactionType)
+                            .amount(this.amount)
+                            .charge(this.charge)
+                            .transactedAt(super.getCreatedAt())
+                            .build();
     }
 }

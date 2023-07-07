@@ -41,7 +41,7 @@ public class TransactionFacadeTest {
 
     @Test
     void validateAndCreateTransaction_ValidTransaction_ReturnsCreatedTransaction() throws Exception {
-        // Arrange
+        
         CreateTransactionRequest request = new CreateTransactionRequest();
         request.setAccountNumber("123456789");
         request.setTransactionType(TransactionType.DEPOSIT);
@@ -70,10 +70,10 @@ public class TransactionFacadeTest {
         when(restrictionServiceFactory.getRestrictionService(any(), any()).runValidation(request)).thenReturn(restrictionAction);
         when(transactionService.createTransaction(request, account, 5.0)).thenReturn(new Transaction());
 
-        // Act
+        
         Transaction createdTransaction = transactionFacade.validateAndCreateTransaction(request);
 
-        // Assert
+        
         assertNotNull(createdTransaction);
         verify(accountService).getAccount(request.getAccountNumber());
         verify(transactionService).getRestrictions(request.getTransactionType(), account.getAccountType());
@@ -84,7 +84,7 @@ public class TransactionFacadeTest {
 
     @Test
     void validateAndCreateTransaction_InvalidTransaction_ThrowsInvalidTransactionException() throws Exception {
-        // Arrange
+        
         CreateTransactionRequest request = new CreateTransactionRequest();
         request.setAccountNumber("123456789");
         request.setTransactionType(TransactionType.DEPOSIT);
@@ -111,7 +111,6 @@ public class TransactionFacadeTest {
         when(restrictionServiceFactory.getRestrictionService(any(), any())).thenReturn(mock(IRestrictionService.class));
         when(restrictionServiceFactory.getRestrictionService(any(), any()).runValidation(request)).thenReturn(restrictionAction);
 
-        // Act & Assert
         assertThrows(InvalidTransactionException.class, () -> transactionFacade.validateAndCreateTransaction(request));
         verify(accountService).getAccount(request.getAccountNumber());
         verify(transactionService).getRestrictions(request.getTransactionType(), account.getAccountType());
@@ -119,7 +118,5 @@ public class TransactionFacadeTest {
         verify(restrictionServiceFactory.getRestrictionService(any(), any())).runValidation(request);
         verify(transactionService, never()).createTransaction(any(), any(), anyDouble());
     }
-
-    // Add more test cases as needed
 
 }

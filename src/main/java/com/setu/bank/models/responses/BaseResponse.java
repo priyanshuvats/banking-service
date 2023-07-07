@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
 public abstract class BaseResponse implements Serializable {
-    private static final long serialVersionUID = 766737479775870601L;
+
     private Status status;
 
     public BaseResponse(Status status) {

@@ -10,7 +10,7 @@ import com.setu.bank.services.transactions.TransactionService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class MonthlyWithdrawlCount implements IRestrictionService{
+public class MonthlyWithdrawalCount implements IRestrictionService{
 
     private final TransactionService transactionService;
     private final TransactionRestriction transactionRestriction;
@@ -19,7 +19,7 @@ public class MonthlyWithdrawlCount implements IRestrictionService{
     public RestrictionAction runValidation(CreateTransactionRequest createTransactionRequest) {
         String accountNumber = createTransactionRequest.getAccountNumber();
         TransactionType txnType = createTransactionRequest.getTransactionType();
-        if(txnType.equals(TransactionType.WITHDRAWL)){
+        if(txnType.equals(TransactionType.WITHDRAWAL)){
             Long lastThirtyDaysWithdrawlTxn = transactionService.getLastXDaysTransactionCount(
                                             accountNumber, txnType, 30);
             Double limit = transactionRestriction.getValue();

@@ -1,5 +1,6 @@
 package com.setu.bank.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.setu.bank.models.dtos.TransactionDto;
 import com.setu.bank.models.entities.Transaction;
 import com.setu.bank.models.requests.CreateTransactionRequest;
 import com.setu.bank.models.requests.GetTransactionsRequest;
@@ -41,7 +43,7 @@ public class TransactionController {
 			@RequestBody CreateTransactionRequest createTransactionRequest) {
 		try{
 			Transaction txn = transactionFacade.validateAndCreateTransaction(createTransactionRequest);
-			return ResponseEntity.ok(new CreateTransactionResponse(txn));
+			return ResponseEntity.ok(new CreateTransactionResponse(txn.toDto()));
 		} catch (Exception e){
 			log.error(e.getMessage() + " Error : " + e);
 			CreateTransactionResponse response = new CreateTransactionResponse(new Status(ResponseType.ERROR, e.getMessage()));
@@ -60,7 +62,11 @@ public class TransactionController {
                                                         .offset(offset)
                                                         .build();
             List<Transaction> txns = transactionService.getTransactions(request);
-            return ResponseEntity.ok(new GetTransactionResponse(txns));
+            List<TransactionDto> responsedDtos = new ArrayList<>();
+            for(Transaction txn: txns){
+                responsedDtos.add(txn.toDto());
+            }
+            return ResponseEntity.ok(new GetTransactionResponse(responsedDtos));
         } catch (Exception e){
             log.error(e.getMessage() + " Error : " + e);
 			GetTransactionResponse response = new GetTransactionResponse(new Status(ResponseType.ERROR, e.getMessage()));

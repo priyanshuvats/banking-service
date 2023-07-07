@@ -34,7 +34,7 @@ public class AccountController {
 			@RequestBody CreateAccountRequest createAccountRequest) {
 		try{
 			Account account = accountService.createAccount(createAccountRequest);
-			return ResponseEntity.ok(new CreateAccountReponse(account.toResponseDto()));
+			return ResponseEntity.ok(new CreateAccountReponse(account.toDto()));
 		} catch (Exception e){
 			log.error(e.getMessage() + " Error : " + e);
 			CreateAccountReponse response = new CreateAccountReponse(new Status(ResponseType.ERROR, e.getMessage()));

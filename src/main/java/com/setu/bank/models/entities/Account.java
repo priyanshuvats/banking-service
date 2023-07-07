@@ -8,6 +8,7 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Check;
 
+import com.setu.bank.models.dtos.AccountDto;
 import com.setu.bank.models.entities.enums.AccountType;
 import com.setu.bank.models.entities.enums.KycStatus;
 
@@ -43,14 +44,14 @@ public class Account extends BaseEntity{
     @OneToOne
     private User accountOwner;
 
-    public Account toResponseDto(){
-        Account account = Account.builder()
+    public AccountDto toDto(){
+        AccountDto accountDto = AccountDto.builder()
                             .accountNumber(this.accountNumber)
                             .accountType(this.accountType)
                             .balance(this.balance)
                             .kycStatus(this.kycStatus)
                             .build();
-        return account;
+        return accountDto;
     }
 
 }

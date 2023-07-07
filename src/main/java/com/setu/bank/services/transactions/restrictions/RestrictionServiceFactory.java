@@ -23,7 +23,7 @@ public class RestrictionServiceFactory {
         if(TransactionRestrictionType.MINIMUM_BALANCE.equals(type)){
             return new MinBalance(txnRestriction, account);
         } else if(TransactionRestrictionType.MONTHLY_WITHDRAWL_COUNT.equals(type)){
-            return new MonthlyWithdrawlCount(transactionService, txnRestriction);
+            return new MonthlyWithdrawalCount(transactionService, txnRestriction);
         } else if(TransactionRestrictionType.SINGLE_DEPOSIT_AMOUNT.equals(type)){
             return new SingleDepositAmount(txnRestriction);
         } else if(TransactionRestrictionType.NO_KYC_MONTHLY_DEPOSIT_SUM.equals(type)){
