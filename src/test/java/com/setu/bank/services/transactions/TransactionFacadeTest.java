@@ -40,7 +40,7 @@ public class TransactionFacadeTest {
     }
 
     @Test
-    void validateAndCreateTransaction_ValidTransaction_ReturnsCreatedTransaction() throws Exception {
+    void validateAndCreateTransaction_ValidDeposit_ReturnsCreatedTransaction() throws Exception {
         
         CreateTransactionRequest request = new CreateTransactionRequest();
         request.setAccountNumber("123456789");
@@ -59,10 +59,7 @@ public class TransactionFacadeTest {
                             .value(50.0)
                             .action(new RestrictionAction(RestrictionActionType.ALLOW, 5.0))
                             .build());
-
-
         RestrictionAction restrictionAction = new RestrictionAction(RestrictionActionType.ALLOW, 5.0);
-        // restrictionAction.setActionType(RestrictionActionType.ALLOW);
 
         when(accountService.getAccount(request.getAccountNumber())).thenReturn(account);
         when(transactionService.getRestrictions(request.getTransactionType(), account.getAccountType())).thenReturn(restrictions);
@@ -77,8 +74,49 @@ public class TransactionFacadeTest {
         assertNotNull(createdTransaction);
         verify(accountService).getAccount(request.getAccountNumber());
         verify(transactionService).getRestrictions(request.getTransactionType(), account.getAccountType());
-        // verify(restrictionServiceFactory).getRestrictionService(any(), any());
         verify(restrictionServiceFactory.getRestrictionService(any(), any())).runValidation(request);
+        verify(accountService).deposit(request.getAccountNumber(), request.getAmount()-5.0);
+        verify(transactionService).createTransaction(request, account, 5.0);
+    }
+
+
+    @Test
+    void validateAndCreateTransaction_ValidWithdrawal_ReturnsCreatedTransaction() throws Exception {
+        
+        CreateTransactionRequest request = new CreateTransactionRequest();
+        request.setAccountNumber("123456789");
+        request.setTransactionType(TransactionType.WITHDRAWAL);
+        request.setAmount(100.0);
+
+        Account account = new Account();
+        account.setAccountNumber("123456789");
+        account.setAccountType(AccountType.REGULAR_SAVINGS);
+
+        List<TransactionRestriction> restrictions = Collections.singletonList(
+                TransactionRestriction.builder()
+                            .accountType(AccountType.REGULAR_SAVINGS)
+                            .transactionType(TransactionType.DEPOSIT)
+                            .type(TransactionRestrictionType.SINGLE_DEPOSIT_AMOUNT)
+                            .value(50.0)
+                            .action(new RestrictionAction(RestrictionActionType.ALLOW, 5.0))
+                            .build());
+        RestrictionAction restrictionAction = new RestrictionAction(RestrictionActionType.ALLOW, 5.0);
+
+        when(accountService.getAccount(request.getAccountNumber())).thenReturn(account);
+        when(transactionService.getRestrictions(request.getTransactionType(), account.getAccountType())).thenReturn(restrictions);
+        when(restrictionServiceFactory.getRestrictionService(any(), any())).thenReturn(mock(IRestrictionService.class));
+        when(restrictionServiceFactory.getRestrictionService(any(), any()).runValidation(request)).thenReturn(restrictionAction);
+        when(transactionService.createTransaction(request, account, 5.0)).thenReturn(new Transaction());
+
+        
+        Transaction createdTransaction = transactionFacade.validateAndCreateTransaction(request);
+
+        
+        assertNotNull(createdTransaction);
+        verify(accountService).getAccount(request.getAccountNumber());
+        verify(transactionService).getRestrictions(request.getTransactionType(), account.getAccountType());
+        verify(restrictionServiceFactory.getRestrictionService(any(), any())).runValidation(request);
+        verify(accountService).withdraw(request.getAccountNumber(), request.getAmount()+5.0);
         verify(transactionService).createTransaction(request, account, 5.0);
     }
 
@@ -114,7 +152,6 @@ public class TransactionFacadeTest {
         assertThrows(InvalidTransactionException.class, () -> transactionFacade.validateAndCreateTransaction(request));
         verify(accountService).getAccount(request.getAccountNumber());
         verify(transactionService).getRestrictions(request.getTransactionType(), account.getAccountType());
-        // verify(restrictionServiceFactory).getRestrictionService(any(), any());
         verify(restrictionServiceFactory.getRestrictionService(any(), any())).runValidation(request);
         verify(transactionService, never()).createTransaction(any(), any(), anyDouble());
     }

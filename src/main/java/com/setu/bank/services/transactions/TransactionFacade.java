@@ -50,17 +50,26 @@ public class TransactionFacade {
             }
             charges += restrictionAction.getCharge()==null ? AppConstants.ZERO : restrictionAction.getCharge();
         }
-
         // settle balance
+        settleAccountBalance(createTransactionsRequest, charges);
+        // create transaction
+        return transactionService.createTransaction(createTransactionsRequest, account, charges);
+    }
+
+
+    private void settleAccountBalance(CreateTransactionRequest createTransactionsRequest, 
+                                    Double charges) throws InvalidTransactionException{
+        String accountNumber = createTransactionsRequest.getAccountNumber();
+        TransactionType txnType = createTransactionsRequest.getTransactionType();
         Double txnAmount = createTransactionsRequest.getAmount();
         if(txnType.equals(TransactionType.DEPOSIT)){
             accountService.deposit(accountNumber, txnAmount-charges);
         } else if (txnType.equals(TransactionType.WITHDRAWAL)){
             accountService.withdraw(accountNumber, txnAmount+charges);
+        } else {
+            throw new InvalidTransactionException("Please use DEPOSIT or WITHDRAWAL as transactionType");
         }
 
-        // create transaction
-        return transactionService.createTransaction(createTransactionsRequest, account, charges);
     }
 
 }
