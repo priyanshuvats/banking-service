@@ -7,9 +7,11 @@ import lombok.Data;
 
 @Data
 public class CreateAccountRequest {
+    @ApiModelProperty(example = "123456")
     private String accountNumber;
     private AccountType accountType;
-    @ApiModelProperty(notes = "Please user userId between 1 to 5 as they are created by default")
+    @ApiModelProperty(example = "1")
     private Long userId;
+    @ApiModelProperty(example = "1000")
     private Double openingBalance;
 }

@@ -40,7 +40,7 @@ public class TransactionFacade {
         List<TransactionRestriction> txnRestrictions = transactionService.getRestrictions(txnType, account.getAccountType());
         Double charges = AppConstants.ZERO;
 
-        // run validations
+        // run validations - can be optimised by running on multiple threads parallely
         for(TransactionRestriction restriction: txnRestrictions){
             IRestrictionService restrictionService = restrictionServiceFactory.getRestrictionService(restriction, account);
             RestrictionAction restrictionAction = restrictionService.runValidation(createTransactionsRequest);

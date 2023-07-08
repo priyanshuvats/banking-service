@@ -21,6 +21,7 @@ import com.setu.bank.models.responses.ResponseType;
 import com.setu.bank.models.responses.Status;
 import com.setu.bank.services.accounts.AccountService;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +35,8 @@ public class AccountController {
 	private final AccountService accountService;
 
 	@GetMapping("/{accountNumber}")
-	public ResponseEntity<GetAccountResponse> getAccount(@PathVariable String accountNumber){
+	public ResponseEntity<GetAccountResponse> getAccount(@PathVariable @Parameter(example = "123456") 
+											  String accountNumber){
 		try{
 			Account account = accountService.getAccount(accountNumber);
 			return ResponseEntity.ok(new GetAccountResponse(account.toDto()));
@@ -59,8 +61,9 @@ public class AccountController {
 	}
     
 	@PutMapping("/{accountNumber}/kyc")
-	public ResponseEntity<KycStatus> updateKycStatus(@PathVariable String accountNumber,
-								@RequestBody UpdateKycStatusRequest request) {
+	public ResponseEntity<KycStatus> updateKycStatus(@PathVariable @Parameter(example = "123456") 
+													String accountNumber,
+													@RequestBody UpdateKycStatusRequest request) {
 		try{
 			accountService.updateKycStatus(accountNumber, request.getKycStatus());
 			return ResponseEntity.ok(request.getKycStatus());
