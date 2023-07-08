@@ -24,6 +24,7 @@ import com.setu.bank.models.responses.Status;
 import com.setu.bank.services.transactions.TransactionFacade;
 import com.setu.bank.services.transactions.TransactionService;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,7 +53,8 @@ public class TransactionController {
 	}
 
     @GetMapping("/")
-    public ResponseEntity<GetTransactionResponse> getTransactions(@RequestParam(name = "accountNumber", required = true) String accountNumber,
+    public ResponseEntity<GetTransactionResponse> getTransactions(@RequestParam(name = "accountNumber", required = true) 
+                                                  @Parameter(example = "123456") String accountNumber,
                                                   @RequestParam(name = "limit", defaultValue = "10") int limit,
                                                   @RequestParam(name = "offset", defaultValue = "0") int offset){
         try{
