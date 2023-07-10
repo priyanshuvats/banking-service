@@ -1,9 +1,11 @@
 package com.setu.bank.exceptions;
 
-public class InvalidTransactionException extends Exception{
+import org.springframework.http.HttpStatus;
+
+public class InvalidTransactionException extends BaseException{
     
     public InvalidTransactionException(String message) {
-        super(message);
+        super(message, HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -3,6 +3,12 @@ package com.setu.bank.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.setu.bank.constants.AppConstants;
+import com.setu.bank.exceptions.BaseException;
 import com.setu.bank.models.dtos.TransactionDto;
 import com.setu.bank.models.entities.Transaction;
 import com.setu.bank.models.requests.CreateTransactionRequest;
@@ -41,21 +49,29 @@ public class TransactionController {
 
     @PostMapping("/")
 	public ResponseEntity<CreateTransactionResponse> createTransaction(
-			@RequestBody CreateTransactionRequest createTransactionRequest) {
+			@Valid @RequestBody CreateTransactionRequest createTransactionRequest) {
 		try{
 			Transaction txn = transactionFacade.validateAndCreateTransaction(createTransactionRequest);
 			return ResponseEntity.ok(new CreateTransactionResponse(txn.toDto()));
-		} catch (Exception e){
+		} catch (BaseException e){
+            log.error(e.getMessage() + " Error : " + e);
+            CreateTransactionResponse response = new CreateTransactionResponse(new Status(ResponseType.ERROR, e.getMessage()));
+			return ResponseEntity.status(e.status).body(response);
+        } catch (Exception e){
 			log.error(e.getMessage() + " Error : " + e);
-			CreateTransactionResponse response = new CreateTransactionResponse(new Status(ResponseType.ERROR, e.getMessage()));
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+			CreateTransactionResponse response = new CreateTransactionResponse(new Status(ResponseType.ERROR, AppConstants.DEFAULT_ERROR));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
     @GetMapping("/")
     public ResponseEntity<GetTransactionResponse> getTransactions(@RequestParam(name = "accountNumber", required = true) 
+                                                  @NotEmpty(message = "account can't be empty")
                                                   @Parameter(example = "123456") String accountNumber,
+                                                  @Positive(message = "limit should be positive")
+                                                  @Max(value = 100, message = "can't fetch more than 100 txn at a time")
                                                   @RequestParam(name = "limit", defaultValue = "10") int limit,
+                                                  @Min(value = 0, message = "offset can't be negative")
                                                   @RequestParam(name = "offset", defaultValue = "0") int offset){
         try{
             GetTransactionsRequest request = GetTransactionsRequest.builder()
@@ -71,8 +87,8 @@ public class TransactionController {
             return ResponseEntity.ok(new GetTransactionResponse(responsedDtos));
         } catch (Exception e){
             log.error(e.getMessage() + " Error : " + e);
-			GetTransactionResponse response = new GetTransactionResponse(new Status(ResponseType.ERROR, e.getMessage()));
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+			GetTransactionResponse response = new GetTransactionResponse(new Status(ResponseType.ERROR, AppConstants.DEFAULT_ERROR));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }

@@ -39,7 +39,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
     
     @Query("""
         SELECT t FROM Transaction t JOIN t.account a WHERE a.accountNumber = :accountNumber
-        """)
+        ORDER BY t.createdAt""")
     List<Transaction> findAllByAccountNumber(
                     @Param("accountNumber") String accountNumber,
                     Pageable pageable);

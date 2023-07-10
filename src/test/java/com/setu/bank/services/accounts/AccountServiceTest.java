@@ -1,5 +1,6 @@
 package com.setu.bank.services.accounts;
 
+import com.setu.bank.exceptions.AccountNotFoundException;
 import com.setu.bank.models.entities.Account;
 import com.setu.bank.models.entities.User;
 import com.setu.bank.models.entities.enums.AccountType;
@@ -60,7 +61,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    void getAccount_ExistingAccountNumber_ReturnsAccount() {
+    void getAccount_ExistingAccountNumber_ReturnsAccount() throws AccountNotFoundException {
         
         String accountNumber = "123456789";
         Account existingAccount = new Account();
@@ -78,12 +79,12 @@ public class AccountServiceTest {
     }
 
     @Test
-    void deposit_ValidAccountNumberAndAmount_CallsIncrementBalance() {
+    void deposit_ValidAccountNumberAndAmount_CallsIncrementBalance() throws AccountNotFoundException {
         
         String accountNumber = "123456789";
         Double amount = 100.0;
 
-        
+        when(accountRepository.incrementBalance(eq(accountNumber), eq(amount))).thenReturn(1);    
         accountService.deposit(accountNumber, amount);
 
         
@@ -91,12 +92,12 @@ public class AccountServiceTest {
     }
 
     @Test
-    void withdraw_ValidAccountNumberAndAmount_CallsDecrementBalance() {
+    void withdraw_ValidAccountNumberAndAmount_CallsDecrementBalance() throws AccountNotFoundException {
         
         String accountNumber = "123456789";
         Double amount = 100.0;
 
-        
+        when(accountRepository.decrementBalance(eq(accountNumber), eq(amount))).thenReturn(1);        
         accountService.withdraw(accountNumber, amount);
 
         
@@ -104,14 +105,14 @@ public class AccountServiceTest {
     }
 
     @Test
-    void updateKycStatus_ValidAccountNumberAndStatus_CallsUpdateKyc() {
+    void updateKycStatus_ValidAccountNumberAndStatus_CallsUpdateKyc() throws AccountNotFoundException {
 
         String accountNumber = "123456789";
-        KycStatus status = KycStatus.PENDING;
+        KycStatus status = KycStatus.COMPLETED;
 
+        when(accountRepository.updateKyc(eq(accountNumber), eq(KycStatus.COMPLETED))).thenReturn(1);
 
         accountService.updateKycStatus(accountNumber, status);
-
 
         verify(accountRepository).updateKyc(accountNumber, status);
     }

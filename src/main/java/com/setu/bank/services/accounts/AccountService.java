@@ -3,6 +3,7 @@ package com.setu.bank.services.accounts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.setu.bank.exceptions.AccountNotFoundException;
 import com.setu.bank.models.entities.Account;
 import com.setu.bank.models.entities.enums.KycStatus;
 import com.setu.bank.models.requests.CreateAccountRequest;
@@ -35,20 +36,33 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public Account getAccount(String accountNumber){
-        return accountRepository.findByAccountNumber(accountNumber);
+    public Account getAccount(String accountNumber) throws AccountNotFoundException{
+        Account account = accountRepository.findByAccountNumber(accountNumber);
+        if(account == null){
+            throw new AccountNotFoundException("Account doesn't exist");
+        }
+        return account;
     }
 
-    public void deposit(String accountNumber, Double amount){
-        accountRepository.incrementBalance(accountNumber, amount);
+    public void deposit(String accountNumber, Double amount) throws AccountNotFoundException{
+        int affectedRows = accountRepository.incrementBalance(accountNumber, amount);
+        if (affectedRows == 0) {
+            throw new AccountNotFoundException("Account not found");
+        }
     }
 
-    public void withdraw(String accountNumber, Double amount){
-        accountRepository.decrementBalance(accountNumber, amount);
+    public void withdraw(String accountNumber, Double amount) throws AccountNotFoundException{
+        int affectedRows =  accountRepository.decrementBalance(accountNumber, amount);
+        if (affectedRows == 0) {
+            throw new AccountNotFoundException("Account not found");
+        }
     }
 
-    public void updateKycStatus(String accountNumber, KycStatus status){
-        accountRepository.updateKyc(accountNumber, status);
+    public void updateKycStatus(String accountNumber, KycStatus status) throws AccountNotFoundException{
+        int affectedRows = accountRepository.updateKyc(accountNumber, status);
+        if (affectedRows == 0) {
+            throw new AccountNotFoundException("Account not found");
+        }
     }
     
 }
