@@ -58,7 +58,7 @@ public class TransactionFacade {
 
 
     private void settleAccountBalance(CreateTransactionRequest createTransactionsRequest, 
-                                    Double charges) throws InvalidTransactionException{
+                                    Double charges) throws Exception{
         String accountNumber = createTransactionsRequest.getAccountNumber();
         TransactionType txnType = createTransactionsRequest.getTransactionType();
         Double txnAmount = createTransactionsRequest.getAmount();
