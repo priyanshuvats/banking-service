@@ -13,8 +13,16 @@
     - there are rules subject to account type for withdrawl and deposit due to which the transaction may get failed or get charged
     - these rules are configured in the database at the starting of application.
 
-## PRD
-- https://docs.google.com/document/d/1wokIOGg4QM-cWD8S4Tt_PmEJwTGCiU9xEvFEAFownnU/edit?usp=sharing
+## Transaction Rules
+- Withdrawal rules:
+    - zero_balance account allows only 4 withdrawals in a month, further withdrawals are blocked
+    - student account allows only 4 withdrawals in a month, charge of 10 per transaction 
+    - student account needs min balance of 1000 rupees , 
+    - regular_saving account allows only 10 withdrawals in a month further withdrawals are charged at 5 rupees per withdrawal
+- Deposit rules:
+    - Depositing more than 10,000 rupees in single transaction on all accounts is not allowed. there is no restriction on total balance.
+    - In month if you  can deposit more than 50k, if  kyc flag true else reject deposit
+
 
 ## Setup
 - please ensure you have docker installed on your machine.
